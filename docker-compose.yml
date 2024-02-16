@@ -1,0 +1,11 @@
+version: '1'
+
+services:
+  database:
+    image: mysql
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: BLOG
