@@ -1,19 +1,22 @@
 'use client'
 
 import ListPosts from "@/components/ListPosts";
-import usePosts from "@/hooks/usePosts";
 import Image from "next/image"
 import Link from "next/link";
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useState } from "react";
 import * as Yup from 'yup';
+import useSWR from 'swr';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Home() {
-  const { posts, iserror } = usePosts(0, 6)
-  if (iserror) console.log(iserror)
+  const posts = useSWR(`/api/home_posts`, url => axios.get(url).then(res => res.data))
+
+  if (posts.error) console.log(posts.error)
 
   const [subcribeLoading, setSubcribeLoading] = useState(false)
+  const [subscribeError, setSubscribeError] = useState('')
 
   const formik = useFormik({
     initialValues: {
@@ -27,10 +30,11 @@ export default function Home() {
     onSubmit: values => {
       setSubcribeLoading(true)
       axios.post('/api/subcribe', values)
-      .then(() => {
-        setSubcribeLoading(false)
-      })
-      .catch(err => console.log(err))
+        .then((res) => {
+          if (res.data.error) setSubscribeError(`${res.data.error.message}: ${res.data.error.detail}`)
+          setSubcribeLoading(false)
+        })
+        .catch(err => console.log(err))
     },
   });
 
@@ -46,8 +50,11 @@ export default function Home() {
       </div>
       <div className="flex w-full mx-auto max-w-container pt-4">
         <div className="flex-3/1 pr-4">
-          <ListPosts posts={posts}/>
-          <Link href="/blogs" className="underline mt-2 block float-end">Show more &gt;&gt;</Link>
+          <ListPosts posts={posts.data} />
+          {
+            posts && posts.data && posts.data.pagination.limit * posts.data.pagination.page < posts.data.pagination.total ?
+              <Link href="/blogs" className="underline mt-2 block float-end">Show more &gt;&gt;</Link> : null
+          }
         </div>
         <div className="flex-1">
           <h3 className="text-center mb-4 text-3xl font-medium">About me</h3>
@@ -78,6 +85,7 @@ export default function Home() {
               className="text-sm py-2 px-4 bg-transparent border-b border-gray-300 w-full outline-none"
               onChange={formik.handleChange}
               value={formik.values.email}
+              required
             />
           </div>
           <div className="mb-4">
@@ -90,10 +98,17 @@ export default function Home() {
               className="text-sm py-2 px-4 bg-transparent border-b border-gray-300 w-full outline-none"
               onChange={formik.handleChange}
               value={formik.values.name}
+              required
             />
           </div>
+          <div className="text-sm text-red-400">
+            {subscribeError && <h3>{subscribeError}</h3>}
+          </div>
           <div className="flex justify-end">
-            <button className="text-gray-800 rounded font-semibold p-2 bg-gray-200" type="submit">Subcribe</button> 
+            <button className="text-gray-800 rounded font-semibold p-2 bg-gray-200 flex items-center" type="submit">
+              Subcribe
+              {subcribeLoading && <AiOutlineLoading3Quarters className="animate-spin ml-2 text-lg" />}
+            </button>
           </div>
         </form>
       </div>

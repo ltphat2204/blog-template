@@ -1,8 +1,9 @@
-import Fetcher from '@/common/Fetcher'
 import useSWR from 'swr'
 
-export default function usePosts (offset, max) {
-    const { data, error, isLoading } = useSWR(`/api/posts?offset=${offset}&max=${max}`, Fetcher)
+export default function usePosts (page, limit) {
+    const { data, error, isLoading } = useSWR(`/api/posts?page=${page}&limit=${limit}`, async(url) => {
+      await axios.get(url)
+    })
     return {
       posts: data,
       isLoading,

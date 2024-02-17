@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function PostCard({data}) {
     return (
-        <Link href={`/blog/${data.id}`} className="flex-1/3 p-2 bg-gray-100 rounded mb-4 hover:drop-shadow-md text-base">
+        <Link href={`/blog/${data.id}`} className="flex-1/3 p-2 bg-gray-100 rounded mb-4 md:mr-2 hover:drop-shadow-md text-base">
             <div className="w-full h-48 relative">
                 <Image
                     src={data.banner}
