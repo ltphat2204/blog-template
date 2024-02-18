@@ -7,11 +7,13 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	categoriesModel "github.com/ltphat2204/blog/backend/categories/entity"
+	categoriesTrans "github.com/ltphat2204/blog/backend/categories/transport"
 	"github.com/ltphat2204/blog/backend/common"
-	postBiz "github.com/ltphat2204/blog/backend/posts/business"
+	postsModel "github.com/ltphat2204/blog/backend/posts/entity"
 	postTrans "github.com/ltphat2204/blog/backend/posts/transport"
+	subcribersModel "github.com/ltphat2204/blog/backend/subcribers/entity"
 	subTrans "github.com/ltphat2204/blog/backend/subcribers/transport"
-	subBiz "github.com/ltphat2204/blog/backend/subcribers/business"
 	"gorm.io/gorm"
 )
 
@@ -29,13 +31,9 @@ func init() {
 
 	database = common.ConnectDB()
 
-	if err := postBiz.CreateTablePosts(database); err != nil {
-		log.Fatal(err.Error())
-	}
-
-	if err := subBiz.CreateTableSubcribers(database); err != nil {
-		log.Fatal(err.Error())
-	}
+	database.AutoMigrate(&subcribersModel.Subcriber{})
+	database.AutoMigrate(&categoriesModel.Category{})
+	database.AutoMigrate(&postsModel.Post{})
 }
 
 func main() {
@@ -59,6 +57,13 @@ func main() {
 	{
 		subcriberRoute.GET("", subTrans.GetSubcriber(database))
 		subcriberRoute.POST("", subTrans.CreateSubcriber(database))
+	}
+
+	categoryRoute := app.Group("/categories")
+	{
+		categoryRoute.GET("", categoriesTrans.GetCategories(database))
+		categoryRoute.POST("", categoriesTrans.CreateCategory(database))
+		categoryRoute.GET("/:id", categoriesTrans.GetCategory(database))
 	}
 
 	app.Run()

@@ -18,5 +18,12 @@ func (s *mySqlStorage) GetPosts(ctx context.Context, condition map[string]interf
 		return nil, err
 	}
 
+	for i := 0; i < len(posts); {
+		if err := s.storage.Where("id = ?", posts[i].CategoryID).First(&posts[i].Category).Error; err != nil {
+			return nil, err
+		}
+		i += 1
+	}
+
 	return posts, nil
 }
