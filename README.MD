@@ -9,8 +9,8 @@ Blog template is powered by [Gin-gonic](https://github.com/gin-gonic/gin) for ba
 - HTTP Basic Authentication for authenticating admin user (developing)
 - CRUD action with users (developing)
 - CRUD action with blog post
-- CRUD action with categories (developing)
-- CRUD action with subcribers (developing)
+- CRUD action with categories
+- List out and make new subcribers
 
 2. Frontend
 
