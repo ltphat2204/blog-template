@@ -1,8 +1,8 @@
 import PostCard from "./PostCard";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-export default function ListPosts({classname, posts}) {
-    if (posts == undefined) return (
+export default function ListPosts({classname, posts, loading}) {
+    if (posts == undefined || loading) return (
         <div className="w-full h-full flex items-center justify-center">
             <AiOutlineLoading3Quarters className="animate-spin ml-2 text-2xl"/>
         </div>

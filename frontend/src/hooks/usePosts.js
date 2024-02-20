@@ -1,12 +1,11 @@
 import useSWR from 'swr'
+import axios from 'axios';
 
-export default function usePosts (page, limit) {
-    const { data, error, isLoading } = useSWR(`/api/posts?page=${page}&limit=${limit}`, async(url) => {
-      await axios.get(url)
-    })
+export default function usePosts (page, category, search) {
+    const { data, error, isLoading } = useSWR(`/api/posts?search=${search}&page=${page}&category_id=${category}`, async(url) => axios.get(url).then(res => res.data))
     return {
       posts: data,
-      isLoading,
-      isError: error
+      isPostsLoading: isLoading,
+      isPostsError: error
     }
-  }
+}

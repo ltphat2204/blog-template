@@ -50,7 +50,7 @@ export default function Home() {
       </div>
       <div className="flex w-full mx-auto max-w-container pt-4">
         <div className="flex-3/1 pr-4">
-          <ListPosts posts={posts.data} />
+          <ListPosts loading={posts.isLoading} posts={posts.data} />
           {
             posts && posts.data && posts.data.pagination.limit * posts.data.pagination.page < posts.data.pagination.total ?
               <Link href="/blogs" className="underline mt-2 block float-end">Show more &gt;&gt;</Link> : null

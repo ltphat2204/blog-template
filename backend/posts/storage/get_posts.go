@@ -8,13 +8,23 @@ import (
 )
 
 func (s *mySqlStorage) GetPosts(ctx context.Context, condition map[string]interface{}, pagination *common.Pagination) ([]entity.PostDisplay, error) {
+	search := condition["search"].(string)
+	search = "%" + search + "%"
+	delete(condition, "search")
+
+	for key, value := range condition {
+		if value == "" {
+			delete(condition, key)
+		}
+	}
+
 	var posts []entity.PostDisplay
 
 	if err := s.storage.Table("posts").Count(&pagination.Total).Error; err != nil {
 		return nil, err
 	}
 
-	if err := s.storage.Offset((pagination.Page-1)*pagination.Limit).Limit(pagination.Limit).Find(&posts, condition).Error; err != nil {
+	if err := s.storage.Offset((pagination.Page-1)*pagination.Limit).Limit(pagination.Limit).Where("title LIKE ? OR description LIKE ?", search, search).Find(&posts, condition).Error; err != nil {
 		return nil, err
 	}
 
