@@ -74,17 +74,17 @@ func main() {
 		categoryRoute.GET("/:id", categoriesTrans.GetCategory(database))
 	}
 
-	categoryRoute.Group("/users")
+	userRoute := app.Group("/users")
 	{
-		categoryRoute.GET("", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.GetAllUsers(database))
-		categoryRoute.POST("", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.CreateUser(database))
+		userRoute.GET("", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.GetAllUsers(database))
+		userRoute.POST("", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.CreateUser(database))
 
-		categoryRoute.GET("/:username", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.GetUserByUsername(database))
-		categoryRoute.PATCH("/:username", middlewares.AuthMiddleware, usersTrans.UpdatePasswordByUsername(database))
-		categoryRoute.DELETE("/:username", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.DeleteUser(database))
+		userRoute.GET("/:username", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.GetUserByUsername(database))
+		userRoute.PATCH("/:username", middlewares.AuthMiddleware, usersTrans.UpdatePasswordByUsername(database))
+		userRoute.DELETE("/:username", middlewares.AuthMiddleware, middlewares.AdminMiddleWare, usersTrans.DeleteUser(database))
 
-		categoryRoute.GET("/token", usersTrans.GetTokenFromUser(database))
-		categoryRoute.GET("/verify", middlewares.AuthMiddleware, usersTrans.VerifyToken(database))
+		userRoute.GET("/token", usersTrans.GetTokenFromUser(database))
+		userRoute.GET("/verify", middlewares.AuthMiddleware, usersTrans.VerifyToken(database))
 	}
 
 	app.Run()
