@@ -34,6 +34,6 @@ func GetTokenFromUser(db *gorm.DB) func(*gin.Context) {
 		}
 
 		// Get user successfully
-		c.JSON(http.StatusFound, common.NewSimpleSuccessResponse(map[string]string{"token": token}))
+		c.JSON(http.StatusOK, common.NewSimpleSuccessResponse(map[string]string{"token": token}))
 	}
 }

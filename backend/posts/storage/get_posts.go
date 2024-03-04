@@ -8,7 +8,11 @@ import (
 )
 
 func (s *mySqlStorage) GetPosts(ctx context.Context, condition map[string]interface{}, pagination *common.Pagination) ([]entity.PostDisplay, error) {
-	search := condition["search"].(string)
+	var search string
+	if condition["search"] == nil {
+		condition["search"] = ""
+	}
+	search = condition["search"].(string)
 	search = "%" + search + "%"
 	delete(condition, "search")
 
