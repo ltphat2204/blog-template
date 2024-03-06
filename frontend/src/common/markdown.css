@@ -1,0 +1,59 @@
+.post h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.post h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.post h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.post p {
+    margin-bottom: 1rem;
+}
+
+.post ul,
+.post ol {
+    margin-bottom: 1rem;
+}
+
+.post li {
+    margin-left: 20px;
+}
+
+.post a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.post a:hover {
+    text-decoration: underline;
+}
+
+.post pre {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.post code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.post blockquote {
+    margin: 0;
+    padding: 0 1em;
+    border-left: 3px solid #ccc;
+    color: #777;
+}
+    
