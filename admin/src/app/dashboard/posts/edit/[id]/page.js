@@ -2,13 +2,15 @@
 
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useRouter } from 'next/navigation';
+import { UserContext } from '@/contexts/UserContext';
 
 export default function Page({ params }) {
     const router = useRouter();
     const [post, setPost] = useState(null)
+    const { user } = useContext(UserContext); 
 
     useEffect(() => {
         axios.get(`/api/posts/${params.id}`)
@@ -26,13 +28,17 @@ export default function Page({ params }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.patch(`/api/posts/${params.id}`, post)
+        axios.patch(`/api/posts/${params.id}`, post, {
+            headers: {
+                Authorization: `BEARER ${user}`
+            }
+        })
         .then(res => {
             if (res.data.success) {
                 alert("Post updated sucessful!")
                 router.push('/dashboard/posts')
             }else {
-                console.log(res.data.error)
+                alert(res.data.message)
             }
         })
         .catch(err => console.log(err))

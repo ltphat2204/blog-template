@@ -55,10 +55,10 @@ func main() {
 	postRoute := app.Group("/posts")
 	{
 		postRoute.GET("", postTrans.GetPosts(database))
-		postRoute.POST("", postTrans.CreatePost(database))
+		postRoute.POST("", middlewares.AuthMiddleware, postTrans.CreatePost(database))
 		postRoute.GET("/:id", postTrans.GetPost(database))
-		postRoute.PATCH("/:id", postTrans.UpdatePost(database))
-		postRoute.DELETE("/:id", postTrans.DeletePost(database))
+		postRoute.PATCH("/:id", middlewares.AuthMiddleware, postTrans.UpdatePost(database))
+		postRoute.DELETE("/:id", middlewares.AuthMiddleware, postTrans.DeletePost(database))
 	}
 
 	subcriberRoute := app.Group("/subcribers")

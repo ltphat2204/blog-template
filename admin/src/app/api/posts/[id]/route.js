@@ -20,7 +20,11 @@ export async function PATCH(request, {params}) {
         const post = await request.json();
         const url = `${process.env.BACKEND_URI}/posts/${params.id}`;
 
-        const res = await axios.patch(url, post);
+        const res = await axios.patch(url, post, {
+            headers: {
+                Authorization: request.headers.get('authorization')
+            }
+        });
         const data = res.data;
 
         return NextResponse.json(data);
@@ -34,7 +38,11 @@ export async function DELETE(request, {params}) {
     try {
         const url = `${process.env.BACKEND_URI}/posts/${params.id}`;
 
-        const res = await axios.delete(url);
+        const res = await axios.delete(url, {
+            headers: {
+                Authorization: request.headers.get('authorization')
+            }
+        });
         const data = res.data;
 
         return NextResponse.json(data);
